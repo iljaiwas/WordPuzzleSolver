@@ -101,7 +101,7 @@ static void * const kDummyKVOContext = (void*)&kDummyKVOContext;
 {
     self.hits = [NSMutableArray array];
 
-    for (Direction dir = DirectionLeft; dir <DirectionUpRight; dir++ ) {
+    for (Direction dir = DirectionLeft; dir <= DirectionUpRight; dir++ ) {
         SearchAnchor anchor = {0,0};
         do {
             for (NSInteger wordLength = kMinHitLength; wordLength <= kMaxHitLength; wordLength++) {
