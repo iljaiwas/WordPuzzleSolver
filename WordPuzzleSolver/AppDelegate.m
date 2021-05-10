@@ -67,7 +67,11 @@ static void * const kDummyKVOContext = (void*)&kDummyKVOContext;
     [self.window.contentView addSubview:self.matrix];
     [self loadMatrixContent];
     [self loadWordList];
+    
+    CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
     [self findHits];
+    double duration = CFAbsoluteTimeGetCurrent() - start;
+    NSLog(@"Took %.2fs, finding %d hits", duration, (int)self.hits.count);
 
     [self.hitArrayController addObserver:self forKeyPath:@"selection" options:0 context:kDummyKVOContext];
 }
@@ -101,7 +105,7 @@ static void * const kDummyKVOContext = (void*)&kDummyKVOContext;
 {
     self.hits = [NSMutableArray array];
 
-    for (Direction dir = DirectionLeft; dir <DirectionUpRight; dir++ ) {
+    for (Direction dir = DirectionLeft; dir <= DirectionUpRight; dir++ ) {
         SearchAnchor anchor = {0,0};
         do {
             for (NSInteger wordLength = kMinHitLength; wordLength <= kMaxHitLength; wordLength++) {
