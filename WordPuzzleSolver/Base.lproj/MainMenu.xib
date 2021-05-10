@@ -12,7 +12,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
                 <outlet property="hitArrayController" destination="heo-Xz-SOu" id="tfc-9C-9rE"/>
@@ -703,13 +703,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="97b-P9-X63">
-                        <rect key="frame" x="-1" y="-1" width="482" height="272"/>
+                        <rect key="frame" x="-1" y="37" width="482" height="234"/>
                         <clipView key="contentView" id="Oif-eA-YH7">
-                            <rect key="frame" x="1" y="1" width="480" height="270"/>
+                            <rect key="frame" x="1" y="1" width="480" height="232"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="LIM-Zh-77j">
-                                    <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="480" height="232"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -768,12 +768,35 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="w0v-53-ivm">
+                        <rect key="frame" x="11" y="9" width="71" height="16"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Hits found:" id="oPO-1m-Laf">
+                            <font key="font" usesAppearanceFont="YES"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Tf7-5S-VyK">
+                        <rect key="frame" x="88" y="9" width="37" height="16"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="PCp-OL-k4g">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <binding destination="heo-Xz-SOu" name="value" keyPath="arrangedObjects.@count" id="aOH-LH-LZK"/>
+                        </connections>
+                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstItem="97b-P9-X63" firstAttribute="leading" secondItem="qDQ-rc-YJs" secondAttribute="leading" constant="-1" id="6GY-yL-cIl"/>
-                    <constraint firstAttribute="bottom" secondItem="97b-P9-X63" secondAttribute="bottom" constant="-1" id="Jb9-YG-13f"/>
+                    <constraint firstItem="Tf7-5S-VyK" firstAttribute="leading" secondItem="w0v-53-ivm" secondAttribute="trailing" constant="10" id="Fbl-mU-saB"/>
                     <constraint firstAttribute="trailing" secondItem="97b-P9-X63" secondAttribute="trailing" constant="-1" id="Mm7-Pr-sMC"/>
+                    <constraint firstItem="w0v-53-ivm" firstAttribute="leading" secondItem="qDQ-rc-YJs" secondAttribute="leading" constant="13" id="REz-iY-oMw"/>
+                    <constraint firstAttribute="bottom" secondItem="w0v-53-ivm" secondAttribute="bottom" constant="9" id="XbA-pc-Nzs"/>
                     <constraint firstItem="97b-P9-X63" firstAttribute="top" secondItem="qDQ-rc-YJs" secondAttribute="top" constant="-1" id="kMm-vL-d43"/>
+                    <constraint firstItem="Tf7-5S-VyK" firstAttribute="firstBaseline" secondItem="w0v-53-ivm" secondAttribute="firstBaseline" id="m1Z-kE-6b1"/>
+                    <constraint firstItem="w0v-53-ivm" firstAttribute="top" secondItem="97b-P9-X63" secondAttribute="bottom" constant="12" id="p5f-O5-fF9"/>
                 </constraints>
             </view>
             <point key="canvasLocation" x="-732" y="361"/>
