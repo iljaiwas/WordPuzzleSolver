@@ -68,12 +68,10 @@ static void * const kDummyKVOContext = (void*)&kDummyKVOContext;
     [self loadMatrixContent];
     [self loadWordList];
     
-    CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
     [self findHits];
-    double duration = CFAbsoluteTimeGetCurrent() - start;
-    NSLog(@"Took %.3fs, finding %d hits", duration, (int)self.hits.count);
 
     [self.hitArrayController addObserver:self forKeyPath:@"selection" options:0 context:kDummyKVOContext];
+    [self.hitArrayController setContent:self.hits];
 }
 
 - (void) loadMatrixContent
@@ -103,6 +101,8 @@ static void * const kDummyKVOContext = (void*)&kDummyKVOContext;
 
 - (void) findHits
 {
+    CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+
     self.hits = [NSMutableArray array];
     NSMutableString *word = [[NSMutableString alloc] initWithCapacity:kMaxHitLength];
 
@@ -128,7 +128,8 @@ static void * const kDummyKVOContext = (void*)&kDummyKVOContext;
     [self.hits sortWithOptions:0 usingComparator:^NSComparisonResult(SearchHit*  _Nonnull obj1, SearchHit*  _Nonnull obj2) {
         return [[obj1 word] caseInsensitiveCompare:[obj2 word]];
     }];
-    [self.hitArrayController setContent:self.hits];
+    double duration = CFAbsoluteTimeGetCurrent() - start;
+    NSLog(@"Took %.3fs, finding %ld hits", duration, self.hits.count);
 }
 
 - (bool) getWordAtAnchor:(SearchAnchor*) inAnchor length:(NSInteger) inLength direction:(Direction) inDirection word:(NSMutableString*) word;
