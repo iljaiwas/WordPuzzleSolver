@@ -14,7 +14,7 @@
 #define kMinHitLength 3
 #define kMaxHitLength 11
 
-char data[kNumberOfRows][kNumberOfColumns] = {
+unichar data[kNumberOfRows][kNumberOfColumns] = {
     {'A', 'I', 'R', 'E', 'D', 'A', 'R', 'K', 'A', 'B', 'E' },
     {'D', 'P', 'T', 'L', 'E', 'S', 'S', 'E', 'F', 'E', 'R' },
     {'V', 'D', 'P', 'E', 'T', 'L', 'O', 'S', 'E', 'F', 'U' },
@@ -71,7 +71,7 @@ static void * const kDummyKVOContext = (void*)&kDummyKVOContext;
     CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
     [self findHits];
     double duration = CFAbsoluteTimeGetCurrent() - start;
-    NSLog(@"Took %.2fs, finding %d hits", duration, (int)self.hits.count);
+    NSLog(@"Took %.3fs, finding %d hits", duration, (int)self.hits.count);
 
     [self.hitArrayController addObserver:self forKeyPath:@"selection" options:0 context:kDummyKVOContext];
 }
@@ -96,7 +96,7 @@ static void * const kDummyKVOContext = (void*)&kDummyKVOContext;
     self.wordSet = [[NSMutableOrderedSet alloc] init];
     for (NSString *line in lines) {
         if (line.length >= kMinHitLength && line.length <= kMaxHitLength) {
-            [self.wordSet addObject:line];
+            [self.wordSet addObject:[line uppercaseString]];
         }
     }
 }
@@ -104,18 +104,19 @@ static void * const kDummyKVOContext = (void*)&kDummyKVOContext;
 - (void) findHits
 {
     self.hits = [NSMutableArray array];
+    NSMutableString *word = [[NSMutableString alloc] initWithCapacity:kMaxHitLength];
 
     for (Direction dir = DirectionLeft; dir <= DirectionUpRight; dir++ ) {
         SearchAnchor anchor = {0,0};
         do {
+            [word setString:@""];
             for (NSInteger wordLength = kMinHitLength; wordLength <= kMaxHitLength; wordLength++) {
-                NSString *word = [self getWordAtAnchor:&anchor length:wordLength direction:dir];
-                if (word == nil) {
+                if (NO == [self getWordAtAnchor:&anchor length:wordLength direction:dir word:word]) {
                     break;
                 }
                 if ([self.wordSet containsObject:word]) {
                     SearchHit *hit = [[SearchHit alloc] init];
-                    hit.word = word;
+                    hit.word = word.lowercaseString;
                     hit.column = anchor.column;
                     hit.row = anchor.row;
                     hit.direction = dir;
@@ -130,22 +131,21 @@ static void * const kDummyKVOContext = (void*)&kDummyKVOContext;
     [self.hitArrayController setContent:self.hits];
 }
 
-- (NSString*) getWordAtAnchor:(SearchAnchor*) inAnchor length:(NSInteger) inLength direction:(Direction) inDirection
+- (bool) getWordAtAnchor:(SearchAnchor*) inAnchor length:(NSInteger) inLength direction:(Direction) inDirection word:(NSMutableString*) word;
 {
-    NSMutableString *word = [NSMutableString string];
-    for (NSInteger i=0; i < inLength; i++) {
-        NSInteger column = inAnchor->column + (i * [self columnDeltaForDirection:inDirection]);
-        NSInteger row = inAnchor->row + (i * [self rowDeltaForDirection:inDirection]);
+    while (word.length < inLength) {
+        NSInteger column = inAnchor->column + (word.length * [self columnDeltaForDirection:inDirection]);
+        NSInteger row = inAnchor->row + (word.length * [self rowDeltaForDirection:inDirection]);
 
         if (column < 0 || column >= kNumberOfColumns) {
-            return nil;
+            return NO;
         }
         if (row < 0 || row >= kNumberOfRows) {
-            return nil;
+            return NO;
         }
-        [word appendFormat:@"%c", data[row][column]];
+        [word appendString:[NSString stringWithCharacters:&(data[row][column]) length:1]];
     }
-    return [word lowercaseString];
+    return YES;
 }
 
 - (BOOL) advanceAnchor:(SearchAnchor*) inAnchor {
