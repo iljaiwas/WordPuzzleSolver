@@ -71,7 +71,7 @@ static void * const kDummyKVOContext = (void*)&kDummyKVOContext;
     CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
     [self findHits];
     double duration = CFAbsoluteTimeGetCurrent() - start;
-    NSLog(@"Took %.3fs, finding %d hits", duration, (int)self.hits.count);
+    NSLog(@"Took %.2fms, finding %d hits", duration * 1000, (int)self.hits.count);
 
     [self.hitArrayController addObserver:self forKeyPath:@"selection" options:0 context:kDummyKVOContext];
 }
