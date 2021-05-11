@@ -69,6 +69,11 @@ static void * const kDummyKVOContext = (void*)&kDummyKVOContext;
     [self loadWordList];
     
     [self findHits];
+<<<<<<< HEAD
+=======
+    double duration = CFAbsoluteTimeGetCurrent() - start;
+    NSLog(@"Took %.2fms, finding %d hits", duration * 1000, (int)self.hits.count);
+>>>>>>> origin/master
 
     [self.hitArrayController addObserver:self forKeyPath:@"selection" options:0 context:kDummyKVOContext];
     [self.hitArrayController setContent:self.hits];

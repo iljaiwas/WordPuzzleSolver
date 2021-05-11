@@ -4,3 +4,5 @@ This is a small macOS app (hacked in Objective-C) for finding English words insi
 
 
 The list of English words is taken from [this GitHub Page](https://github.com/dwyl/english-words), but converted to sane line endings.
+
+There is also a [Xojo](http://xojo.com) (formerly known as REALbasic) version (`WordPuzzleSolver.rbp`), written by @tempelmann.
